@@ -13,6 +13,5 @@ type Voter struct {
 	Name       string `json:"name"`
 	HealthCard string `json:"health_card"`
 	HasVoted   bool   `json:"has_voted"`
-	Vote       string
 	CanVote    bool
 }
