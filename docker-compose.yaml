@@ -1,0 +1,10 @@
+version: "3"
+services:
+  ugcdatabase:
+    image: "postgres:latest"
+    ports:
+      - 5050:5432
+    environment:
+      POSTGRES_USER: voter_user
+      POSTGRES_PASSWORD: voter_password
+      POSTGRES_DB: voter_db_name
