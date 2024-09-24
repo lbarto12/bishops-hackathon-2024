@@ -50,7 +50,7 @@ create table voter_reg
 
 create table polls
 (
-    candidate integer,
+    candidate integer
             primary key,
     votes int
 );
