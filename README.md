@@ -45,15 +45,14 @@ create table voter_reg
     health_card varchar,
     name        varchar,
     id          serial
-        constraint voter_reg_pk
             primary key
 );
 
 create table polls
 (
-    candidate_1 integer,
-    candidate_2 integer,
-    candidate_3 integer
+    candidate integer,
+            primary key,
+    votes int
 );
 
 ```
