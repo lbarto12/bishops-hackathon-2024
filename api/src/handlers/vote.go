@@ -3,8 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"votingapi/src/postgres"
+	"votingapi/src/responses"
 )
 
 func AddVotingHandlers(mux *http.ServeMux) {
@@ -12,9 +14,10 @@ func AddVotingHandlers(mux *http.ServeMux) {
 
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			io.WriteString(w, err.Error())
-			return
+			responses.DoErrorResponse(w, responses.ApiResponse[any]{})
 		}
+
+		log.Printf("called with: %v", string(body))
 
 		var request VoteRequest
 		err = json.Unmarshal(body, &request)
