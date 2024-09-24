@@ -2,43 +2,74 @@ package postgres
 
 import (
 	"errors"
+	"fmt"
+	"hash/fnv"
 )
 
-func Vote(voter Voter, candidate string) error {
+func hashFunc(s string) string {
+	h := fnv.New64a()
+	h.Write([]byte(s))
+	return fmt.Sprintf("%x", h.Sum64())
+}
+
+func Vote(voter VoterRequest, candidate string) error {
 	db, err := Connect()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
-
-	voterData, err := voter.FillStats()
+	var voterData VoterData
+	err = db.Get(&voterData, "SELECT * FROM voter WHERE candidate_1 = $1 OR candidate_2 = $1 OR candidate_3 = $1", candidate)
 	if err != nil {
 		return err
-	}
-
-	if !voterData.CanVote {
-		return errors.New("voter is not eligible to vote")
 	}
 
 	if voterData.HasVoted {
 		return errors.New("voter has already voted")
 	}
 
-	_, err = db.Query(`
-	UPDATE polls
-	SET votes = votes + 1
-	WHERE candidate = $1
-`, candidate)
+	healthHash := hashFunc(voter.HealthCard)
+	nameHash := hashFunc(voter.Name)
+
+	if !(voterData.HealthCardHash == healthHash || voterData.HealthCardHash == nameHash) {
+		return errors.New("bad voter data")
+	}
+
+	var candidateId int
+	if voterData.Candidate1 == candidate {
+		candidateId = 1
+	} else if voterData.Candidate2 == candidate {
+		candidateId = 2
+	} else if voterData.Candidate3 == candidate {
+		candidateId = 3
+	}
+
+	tx, err := db.Beginx()
+
 	if err != nil {
 		return err
 	}
 
-	_, err = db.Query(`
-	UPDATE voters
-	SET has_voted = true
-	WHERE health_card = $1
-`, voter.HealthCard)
+	query, err := tx.NamedQuery(`UPDATE voter SET has_voted = true WHERE id = :id;`, voterData)
 	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	err = query.Close()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	_, err = tx.Exec(`UPDATE polls SET votes = votes + 1 WHERE candidate = $1;`, candidateId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		tx.Rollback()
 		return err
 	}
 
