@@ -36,7 +36,7 @@ create table voter
     "name_hash"      varchar,
     candidate_1      uuid,
     candidate_2      uuid,
-    canidate_3       uuid,
+    candidate_3       uuid,
     has_voted        boolean
 );
 
