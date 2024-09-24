@@ -28,25 +28,34 @@ cd <project root> && docker compose up
 
 ### In Editor 
 ```sql
-create table voters
+create table voter
 (
-    id          serial,
-    health_card varchar(256) not null,
-    name        varchar(300) not null,
-    has_voted   boolean      not null
+    id               serial
+            primary key,
+    health_card_hash varchar,
+    "name+hash"      varchar,
+    candidate_1      uuid,
+    candidate_2      uuid,
+    canidate_3       uuid,
+    has_voted        boolean
 );
 
-alter table voters
-    owner to voter_user;
+create table voter_reg
+(
+    health_card varchar,
+    name        varchar,
+    id          serial
+        constraint voter_reg_pk
+            primary key
+);
 
 create table polls
 (
-    candidate varchar(300) not null,
-    votes     bigint       not null
+    candidate_1 integer,
+    candidate_2 integer,
+    candidate_3 integer
 );
 
-alter table polls
-    owner to voter_user;
 ```
 
 .env in voterapi example:
