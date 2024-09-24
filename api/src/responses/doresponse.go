@@ -6,6 +6,26 @@ import (
 	"net/http"
 )
 
+func DoSuccessResponse[T any](w http.ResponseWriter, data ApiResponse[T]) {
+	w.WriteHeader(data.Status)
+	w.Header().Add("Content-Type", "application/json")
+	message, err := json.Marshal(data)
+	if err != nil {
+		DoErrorResponse(
+			w,
+			ApiResponse[T]{
+				Status:  http.StatusInternalServerError,
+				Message: "Failed to marshal response data",
+			},
+		)
+	}
+	_, err = w.Write(message)
+	if err != nil {
+		log.Printf("Error writing api success response: %s", err)
+		return
+	}
+}
+
 func DoErrorResponse[T any](w http.ResponseWriter, response ApiResponse[T]) {
 	w.Header().Set("Content-Type", "application/json")
 	if response.Message != "" {

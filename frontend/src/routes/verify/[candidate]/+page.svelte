@@ -17,7 +17,7 @@
         requesting = true;
         const response = await vote(legalName, healthCardNumber, data.candidate);
         console.log(response);
-        if (response.status === 200) {
+        if (response.status === 201) {
             setTimeout(() => goto('/confirmation'), 0); // stupid
         }
         else {

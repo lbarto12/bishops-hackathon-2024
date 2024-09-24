@@ -9,13 +9,13 @@ type Credentials struct {
 }
 
 type VoterData struct {
-	Id             int    `db:"id""`
+	Id             int    `db:"id"`
 	NameHash       string `db:"name_hash"`
 	HealthCardHash string `db:"health_card_hash"`
-	HasVoted       bool   `db:"has_voted""`
-	Candidate1     string `db:"candidate1"`
-	Candidate2     string `db:"candidate2"`
-	Candidate3     string `db:"candidate3"`
+	HasVoted       bool   `db:"has_voted"`
+	Candidate1     string `db:"candidate_1"`
+	Candidate2     string `db:"candidate_2"`
+	Candidate3     string `db:"candidate_3"`
 }
 
 type VoterRequest struct {

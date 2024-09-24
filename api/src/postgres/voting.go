@@ -31,7 +31,7 @@ func Vote(voter VoterRequest, candidate string) error {
 	healthHash := hashFunc(voter.HealthCard)
 	nameHash := hashFunc(voter.Name)
 
-	if !(voterData.HealthCardHash == healthHash || voterData.HealthCardHash == nameHash) {
+	if voterData.HealthCardHash != healthHash || voterData.NameHash != nameHash {
 		return errors.New("bad voter data")
 	}
 

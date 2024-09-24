@@ -18,6 +18,7 @@ func AddVotingHandlers(mux *http.ServeMux) {
 				Status:  http.StatusBadRequest,
 				Message: "Request Unreadable",
 			})
+			return
 		}
 
 		log.Printf("called with: %v", string(body))
@@ -25,17 +26,26 @@ func AddVotingHandlers(mux *http.ServeMux) {
 		var request VoteRequest
 		err = json.Unmarshal(body, &request)
 		if err != nil {
-			io.WriteString(w, err.Error())
+			responses.DoErrorResponse(w, responses.ApiResponse[any]{
+				Status:  http.StatusBadRequest,
+				Message: "Request Unreadable",
+			})
 			return
 		}
 
 		err = postgres.Vote(request.Voter, request.Candidate)
 		if err != nil {
-			io.WriteString(w, err.Error())
+			responses.DoErrorResponse(w, responses.ApiResponse[any]{
+				Status:  http.StatusInternalServerError,
+				Message: "Vote not Registered",
+			})
 			return
 		}
 
-		io.WriteString(w, "Vote Successful!")
+		responses.DoSuccessResponse(w, responses.ApiResponse[any]{
+			Status:  http.StatusCreated,
+			Message: "Vote Created",
+		})
 
 	})
 }
