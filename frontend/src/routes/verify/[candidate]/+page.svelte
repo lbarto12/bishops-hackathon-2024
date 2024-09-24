@@ -17,8 +17,11 @@
         requesting = true;
         const response = await vote(legalName, healthCardNumber, data.candidate);
         console.log(response);
-        if (response.status === 201) {
+        if (response.status === 201) { // created new
             setTimeout(() => goto('/confirmation'), 0); // stupid
+        }
+        else if (response.status === 200) { // already voted
+            setTimeout(() => goto('/reconfirmation'), 0); // stupid as well
         }
         else {
             failed = true;

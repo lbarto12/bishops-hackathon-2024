@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
-	"log"
 	"net/http"
 	"votingapi/src/postgres"
 	"votingapi/src/responses"
@@ -21,8 +21,6 @@ func AddVotingHandlers(mux *http.ServeMux) {
 			return
 		}
 
-		log.Printf("called with: %v", string(body))
-
 		var request VoteRequest
 		err = json.Unmarshal(body, &request)
 		if err != nil {
@@ -35,6 +33,14 @@ func AddVotingHandlers(mux *http.ServeMux) {
 
 		err = postgres.Vote(request.Voter, request.Candidate)
 		if err != nil {
+			if errors.Is(err, postgres.HasVotedError) {
+				responses.DoSuccessResponse(w, responses.ApiResponse[any]{
+					Status:  http.StatusOK,
+					Message: "Vote Created",
+				})
+				return
+			}
+
 			responses.DoErrorResponse(w, responses.ApiResponse[any]{
 				Status:  http.StatusInternalServerError,
 				Message: "Vote not Registered",

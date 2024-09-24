@@ -12,6 +12,9 @@ func hashFunc(s string) string {
 	return fmt.Sprintf("%x", h.Sum64())
 }
 
+var HasVotedError = errors.New("user has already voted")
+var InvalidVoteError = errors.New("invalid vote")
+
 func Vote(voter VoterRequest, candidate string) error {
 	db, err := Connect()
 	if err != nil {
@@ -25,14 +28,14 @@ func Vote(voter VoterRequest, candidate string) error {
 	}
 
 	if voterData.HasVoted {
-		return errors.New("voter has already voted")
+		return HasVotedError
 	}
 
 	healthHash := hashFunc(voter.HealthCard)
 	nameHash := hashFunc(voter.Name)
 
 	if voterData.HealthCardHash != healthHash || voterData.NameHash != nameHash {
-		return errors.New("bad voter data")
+		return InvalidVoteError
 	}
 
 	var candidateId int
