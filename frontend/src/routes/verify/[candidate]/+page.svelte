@@ -1,5 +1,6 @@
 <script lang="ts">
     import { vote } from "$lib/voting/verify";
+    import {goto} from "$app/navigation";
 
     export let data;
 
@@ -8,9 +9,27 @@
     let legalName: string = "";
     let healthCardNumber: string = "";
 
+    let requesting: boolean = false;
+    let failed: boolean = false;
+
+    async function executeVote() {
+        if (requesting) return;
+        requesting = true;
+        const response = await vote(legalName, healthCardNumber, data.candidate);
+        console.log(response);
+        if (response.status === 200) {
+            setTimeout(() => goto('/confirmation'), 0); // stupid
+        }
+        else {
+            failed = true;
+            setTimeout(() => {failed = false;}, 5000);
+        }
+        requesting = false;
+    }
+
 </script>
 
-<form class="flex justify-center h-full" on:submit={() => {vote(legalName, healthCardNumber, data.candidate)}}>
+<form class="flex justify-center h-full" on:submit={executeVote}>
     <div class="card w-96 bg-base-100 shadow-xl mt-20 mb-20">
         <div class="card-body">
             <h2 class="card-title">Please Verify Your Identity</h2>
@@ -25,16 +44,28 @@
                 </label>
             </div>
             <div class="card-actions justify-end">
+
                 <button
                         class="btn btn-primary w-full"
                         type="submit">
-                    Continue to Vote
+                    {#if requesting}
+                        <span class="loading loading-spinner loading-md"></span>
+                    {:else}
+                        Submit Vote
+                    {/if}
                 </button>
             </div>
         </div>
     </div>
 </form>
 
+{#if failed}
+    <div class="toast toast-center">
+        <div class="alert alert-error">
+            Something went wrong...
+        </div>
+    </div>
+{/if}
 
 
 

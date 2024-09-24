@@ -34,9 +34,11 @@ func main() {
 
 	apiUrl := fmt.Sprintf("%s:%s", apiHost, apiPort)
 
+	log.Printf("Frontend %s", frontendPath)
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{frontendPath},
 		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 		// Debug: true,
 	})
 

@@ -14,7 +14,10 @@ func AddVotingHandlers(mux *http.ServeMux) {
 
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			responses.DoErrorResponse(w, responses.ApiResponse[any]{})
+			responses.DoErrorResponse(w, responses.ApiResponse[any]{
+				Status:  http.StatusBadRequest,
+				Message: "Request Unreadable",
+			})
 		}
 
 		log.Printf("called with: %v", string(body))
