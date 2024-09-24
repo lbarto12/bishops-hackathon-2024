@@ -1,8 +1,8 @@
 package postgres
 
 import (
-	"database/sql"
 	"fmt"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"os"
 )
@@ -42,7 +42,7 @@ func GetCredentials() Credentials {
 	}
 }
 
-func Connect() (*sql.DB, error) {
+func Connect() (*sqlx.DB, error) {
 
 	credentials := GetCredentials()
 
@@ -55,7 +55,7 @@ func Connect() (*sql.DB, error) {
 		credentials.Database,
 	)
 
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sqlx.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, err
 	}

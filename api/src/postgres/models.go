@@ -8,10 +8,17 @@ type Credentials struct {
 	Database string
 }
 
-type Voter struct {
-	Id         int    `json:"id,omitempty"`
+type VoterData struct {
+	Id             int    `db:"id""`
+	NameHash       string `db:"name_hash"`
+	HealthCardHash string `db:"health_card_hash"`
+	HasVoted       bool   `db:"has_voted""`
+	Candidate1     string `db:"candidate1"`
+	Candidate2     string `db:"candidate2"`
+	Candidate3     string `db:"candidate3"`
+}
+
+type VoterRequest struct {
 	Name       string `json:"name"`
 	HealthCard string `json:"health_card"`
-	HasVoted   bool   `json:"has_voted,omitempty"`
-	CanVote    bool
 }
