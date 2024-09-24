@@ -33,7 +33,7 @@ create table voter
     id               serial
             primary key,
     health_card_hash varchar,
-    "name+hash"      varchar,
+    "name_hash"      varchar,
     candidate_1      uuid,
     candidate_2      uuid,
     canidate_3       uuid,
