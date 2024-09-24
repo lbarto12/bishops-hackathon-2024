@@ -9,9 +9,9 @@ type Credentials struct {
 }
 
 type Voter struct {
-	Id         int    `json:"id"`
+	Id         int    `json:"id,omitempty"`
 	Name       string `json:"name"`
 	HealthCard string `json:"health_card"`
-	HasVoted   bool   `json:"has_voted"`
+	HasVoted   bool   `json:"has_voted,omitempty"`
 	CanVote    bool
 }
