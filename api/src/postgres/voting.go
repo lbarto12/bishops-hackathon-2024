@@ -2,14 +2,25 @@ package postgres
 
 import (
 	"errors"
-	"fmt"
-	"hash/fnv"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func hashFunc(s string) string {
-	h := fnv.New64a()
-	h.Write([]byte(s))
-	return fmt.Sprintf("%x", h.Sum64())
+/*
+	hashFunc hashes the input string using bcrypt.
+
+no salting needed when using bcrypt  since it automatically generates a salt and returns a hashed string.
+*/
+func hashFunc(input string) (string, error) {
+	hashed, err := bcrypt.GenerateFromPassword([]byte(input), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hashed), nil
+}
+
+// Compare the plain input with the stored hash.
+func compareHash(hash, input string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(input))
 }
 
 var HasVotedError = errors.New("user has already voted")
@@ -31,10 +42,8 @@ func Vote(voter VoterRequest, candidate string) error {
 		return HasVotedError
 	}
 
-	healthHash := hashFunc(voter.HealthCard)
-	nameHash := hashFunc(voter.Name)
-
-	if voterData.HealthCardHash != healthHash || voterData.NameHash != nameHash {
+	// Comparing the stored hash with the input voter data.
+	if compareHash(voterData.HealthCardHash, voter.HealthCard) != nil || compareHash(voterData.NameHash, voter.Name) != nil {
 		return InvalidVoteError
 	}
 
