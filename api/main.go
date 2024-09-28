@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"votingapi/src/handlers"
+	"votingapi/src/postgres"
 )
 
 func main() {
@@ -42,37 +43,18 @@ func main() {
 		// Debug: true,
 	})
 
+	// Init Postgres
+	err = postgres.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	mux := http.NewServeMux()
 
 	handlers.AddVotingHandlers(mux)
 
 	handler := c.Handler(mux)
 
-	//// Demo call
-	//go func() {
-	//	time.Sleep(time.Second * 3)
-	//
-	//	req, err := json.Marshal(handlers.VoteRequest{
-	//		Voter: postgres.Voter{
-	//			HealthCard: "123-456-789",
-	//		},
-	//		Candidate: "Liam",
-	//	})
-	//
-	//	resp, err := http.Post(fmt.Sprintf("http://%s/api/vote", apiUrl), "application/json", bytes.NewBuffer(req))
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//	defer resp.Body.Close()
-	//
-	//	fmt.Printf("Response status: %v\n", resp.Body) //TODO: implement proper response codes for front-end
-	//
-	//}()
-
 	log.Printf("API: Listening on %s...\n", apiUrl)
-	err = http.ListenAndServe(apiUrl, handler)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	log.Fatal(http.ListenAndServe(apiUrl, handler))
 }

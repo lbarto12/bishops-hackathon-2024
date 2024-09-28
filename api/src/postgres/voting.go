@@ -16,11 +16,11 @@ var HasVotedError = errors.New("user has already voted")
 var InvalidVoteError = errors.New("invalid vote")
 
 func Vote(voter VoterRequest, candidate string) error {
-	db, err := Connect()
+	db, err := Database()
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+
 	var voterData VoterData
 	err = db.Get(&voterData, "SELECT * FROM voter WHERE candidate_1 = $1 OR candidate_2 = $1 OR candidate_3 = $1", candidate)
 	if err != nil {

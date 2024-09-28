@@ -16,7 +16,7 @@ func AddVotingHandlers(mux *http.ServeMux) {
 		if err != nil {
 			responses.DoErrorResponse(w, responses.ApiResponse[any]{
 				Status:  http.StatusBadRequest,
-				Message: "Request Unreadable",
+				Message: "Request Unreadable: " + err.Error(),
 			})
 			return
 		}
@@ -26,7 +26,7 @@ func AddVotingHandlers(mux *http.ServeMux) {
 		if err != nil {
 			responses.DoErrorResponse(w, responses.ApiResponse[any]{
 				Status:  http.StatusBadRequest,
-				Message: "Request Unreadable",
+				Message: "Request Unreadable: " + err.Error(),
 			})
 			return
 		}
@@ -43,7 +43,7 @@ func AddVotingHandlers(mux *http.ServeMux) {
 
 			responses.DoErrorResponse(w, responses.ApiResponse[any]{
 				Status:  http.StatusInternalServerError,
-				Message: "Vote not Registered",
+				Message: "Vote not Registered: " + err.Error(),
 			})
 			return
 		}
