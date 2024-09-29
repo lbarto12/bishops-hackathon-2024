@@ -13,6 +13,7 @@ func Init() error {
 	if err == nil {
 		log.Println("Successfully connected to database")
 	}
+	database.SetMaxOpenConns(75)
 	return err
 }
 
