@@ -2,7 +2,7 @@
 import {PUBLIC_API_HOST} from "$env/static/public";
 
 
-export async function vote(name: string, healthCard: string, candidate: string) {
+export async function vote(name: string, healthCard: string, candidate: string): Promise<Response> {
     return await fetch(PUBLIC_API_HOST + "/vote", {
         method: "POST",
         body: JSON.stringify({

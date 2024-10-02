@@ -1,6 +1,6 @@
 <script lang="ts">
     import { vote } from "$lib/voting/verify";
-    import {goto} from "$app/navigation";
+    import { goto } from "$app/navigation";
 
     export let data;
 
@@ -10,13 +10,14 @@
     let requesting: boolean = false;
     let failed: boolean = false;
 
-    const candidate = "Voting for: " + (data.candidates[data.candidate[0]] || "No Candidate Selected"); // Yuck
+    const candidate: string = "Voting for: " + (data.candidates[data.candidate[0]] || "No Candidate Selected"); // Yuck
 
-    async function executeVote() {
+    async function executeVote(): void {
         if (requesting) return;
         requesting = true;
-        const response = await vote(legalName, healthCardNumber, data.candidate);
-        console.log(response);
+
+        const response: Response = await vote(legalName, healthCardNumber, data.candidate);
+
         if (response.status === 201) { // created new
             setTimeout(() => goto('/confirmation'), 0); // stupid
         }
