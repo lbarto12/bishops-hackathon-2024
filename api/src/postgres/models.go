@@ -22,3 +22,12 @@ type VoterRequest struct {
 	Name       string `json:"name"`
 	HealthCard string `json:"health_card"`
 }
+
+type CandidatePollData struct {
+	Candidate int `json:"candidate"`
+	Votes     int `json:"votes"`
+}
+
+type PollData struct {
+	Polls []CandidatePollData `json:"polls"`
+}

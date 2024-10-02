@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"votingapi/src/handlers"
 	"votingapi/src/postgres"
+	"votingapi/src/serve"
 )
 
 func main() {
@@ -51,7 +51,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	handlers.AddVotingHandlers(mux)
+	serve.AddApiHandlers(mux)
 
 	handler := c.Handler(mux)
 

@@ -2,7 +2,7 @@
 
 
 
-   <script>
+<script>
     import BarChart from '$lib/charting/BarChart.svelte';
     import PieChart from '$lib/charting/PieChart.svelte';
     import HorizontalBarChart from '$lib/charting/HorizontalBarChart.svelte';
