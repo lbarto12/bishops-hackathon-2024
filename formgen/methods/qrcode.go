@@ -10,6 +10,12 @@ import (
 )
 
 func GenerateVoters(n int64) error {
+
+	frontUrl, ok := os.LookupEnv("FRONTEND_URL")
+	if !ok {
+		return fmt.Errorf("env variable FRONTEND_URL not found")
+	}
+
 	for i := range n {
 		name := fmt.Sprintf("FNAME%d LNAME%d", i, i)
 		card := util.RandomHealthCard(8)
@@ -25,7 +31,7 @@ func GenerateVoters(n int64) error {
 			uid := fmt.Sprintf("%d%s", j+1, candidate[1:])
 			canUUIDs = append(canUUIDs, uid)
 
-			qrc, err := qrcode.New(fmt.Sprintf("http://207.162.100.117:5173/verify/%s", uid))
+			qrc, err := qrcode.New(fmt.Sprintf("%s/verify/%s", frontUrl, uid))
 			if err != nil {
 				return err
 			}
