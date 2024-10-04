@@ -5,11 +5,11 @@
     let canvasElement;
 
     onMount(() => {
-        initializeChart('pie', canvasElement);
+        initializeChart('doughnut', canvasElement); // To initialize Doughnut Chart
     });
 
     onDestroy(() => {
-        if (stopPolling) stopPolling();
+        if (stopPolling) stopPolling(); // Stop polling when component is destroyed
     });
 </script>
 
