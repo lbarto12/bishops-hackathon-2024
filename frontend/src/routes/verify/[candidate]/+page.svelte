@@ -10,8 +10,6 @@
     let requesting: boolean = false;
     let failed: boolean = false;
 
-    const candidate: string = "Voting for: " + (data.candidates[data.candidate[0]] || "No Candidate Selected"); // Yuck
-
     async function executeVote(): void {
         if (requesting) return;
         requesting = true;
@@ -36,7 +34,7 @@
 <form class="flex justify-center h-full" on:submit={executeVote}>
     <div class="card w-96 bg-base-100 shadow-xl mt-20 mb-20">
         <div class="card-body">
-            <h1>{candidate}</h1>
+            <h1>Your Secure Candidate Code: {data.candidate_display}</h1>
             <h2 class="card-title">Please Verify Your Identity</h2>
             <div class="items-center mt-2">
                 <label class="input input-bordered flex items-center gap-2 mb-2">
