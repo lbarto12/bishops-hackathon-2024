@@ -59,6 +59,7 @@ func AddVotingHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/getint/{uid}", func(w http.ResponseWriter, r *http.Request) {
 		uid, _ := strconv.ParseInt(string([]byte(r.PathValue("uid"))[:8]), 16, 16)
 		uidInt := int(uid)
+		uidInt = uidInt % 100
 		w.Write([]byte(strconv.Itoa(uidInt)))
 	})
 
