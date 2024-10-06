@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
-	"strconv"
+	"os"
 	"votingapi/src/postgres"
 	"votingapi/src/responses"
 )
@@ -57,10 +59,21 @@ func AddVotingHandlers(mux *http.ServeMux) {
 	})
 
 	mux.HandleFunc("GET /api/getint/{uid}", func(w http.ResponseWriter, r *http.Request) {
-		uid, _ := strconv.ParseInt(string([]byte(r.PathValue("uid"))[:8]), 16, 16)
-		uidInt := int(uid)
-		uidInt = uidInt % 100
-		w.Write([]byte(strconv.Itoa(uidInt)))
+
+		salt, ok := os.LookupEnv("CANDIDATE_SALT")
+		if !ok {
+			responses.DoErrorResponse(w, responses.ApiResponse[any]{
+				Status: http.StatusInternalServerError,
+			})
+			return
+		}
+
+		id := r.PathValue("uid") + salt
+
+		ha := sha256.Sum256([]byte(id))
+		fmt.Println(fmt.Sprintf("%x", ha[:2]))
+
+		io.WriteString(w, fmt.Sprintf("%x", ha[:2]))
 	})
 
 }

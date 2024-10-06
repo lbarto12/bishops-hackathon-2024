@@ -16,3 +16,8 @@ export async function vote(name: string, healthCard: string, candidate: string):
         })
     });
 }
+
+export async function getCandidateInt(uuid: string): Promise<string> {
+    const res: Response = await fetch(PUBLIC_API_HOST + `/getint/${uuid}`, {method: "GET"});
+    return await res.text();
+}
