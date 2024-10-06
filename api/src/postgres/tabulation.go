@@ -8,16 +8,14 @@ func GetPolls() (PollData, error) {
 		return PollData{}, err
 	}
 
-	//defer db.Close() // temp solution to make the connection open
-
 	var data PollData
 
-	rows, err := db.Query("SELECT * FROM polls;") // candidate is an integer it needs to be changed
+	rows, err := db.Query("SELECT * FROM polls;")
 	if err != nil {
 		return PollData{}, err
 	}
 
-	//defer rows.Close()  // temp solution to make the connection open
+	defer rows.Close()
 
 	for rows.Next() {
 		var candidateData CandidatePollData
