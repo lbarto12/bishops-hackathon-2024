@@ -1,41 +1,31 @@
 package postgres
 
 import (
+	"crypto/sha256"
 	"errors"
 	"fmt"
-	"hash/fnv"
 )
-
-func hashFunc(s string) string {
-	h := fnv.New64a()
-	_, _ = h.Write([]byte(s))
-	return fmt.Sprintf("%x", h.Sum64())
-}
 
 var HasVotedError = errors.New("user has already voted")
 var InvalidVoteError = errors.New("invalid vote")
 
 func Vote(voter VoterRequest, candidate string) error {
+	tokenHashByte := sha256.Sum256([]byte(voter.Data))
+	tokenHash := fmt.Sprintf("%x", tokenHashByte[:])
+
 	db, err := Database()
 	if err != nil {
 		return err
 	}
 
 	var voterData VoterData
-	err = db.Get(&voterData, "SELECT * FROM voter WHERE candidate_1 = $1 OR candidate_2 = $1 OR candidate_3 = $1", candidate)
+	err = db.Get(&voterData, "SELECT * FROM voter WHERE candidate_1 = $1 OR candidate_2 = $1 OR candidate_3 = $1", tokenHash)
 	if err != nil {
 		return err
 	}
 
 	if voterData.HasVoted {
 		return HasVotedError
-	}
-
-	healthHash := hashFunc(voter.HealthCard)
-	nameHash := hashFunc(voter.Name)
-
-	if voterData.HealthCardHash != healthHash || voterData.NameHash != nameHash {
-		return InvalidVoteError
 	}
 
 	var candidateId int
@@ -53,7 +43,7 @@ func Vote(voter VoterRequest, candidate string) error {
 		return err
 	}
 
-	query, err := tx.NamedQuery(`UPDATE voter SET has_voted = true WHERE id = :id;`, voterData)
+	query, err := tx.NamedQuery(`UPDATE voter SET has_voted = true WHERE id = :id;`, voterData.Id)
 	if err != nil {
 		_ = tx.Rollback()
 		return err
@@ -75,6 +65,5 @@ func Vote(voter VoterRequest, candidate string) error {
 		_ = tx.Rollback()
 		return err
 	}
-
 	return nil
 }
