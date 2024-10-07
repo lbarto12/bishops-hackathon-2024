@@ -49,16 +49,14 @@ func GenerateVoters(n int64) error {
 		}
 
 		for j, candidate := range candidates {
+			canUUIDs = append(canUUIDs, candidate)
 
-			uid := fmt.Sprintf("%d%s", j+1, candidate[1:])
-			canUUIDs = append(canUUIDs, uid)
-
-			qrc, err := qrcode.New(fmt.Sprintf("%s/verify/%s", frontUrl, uid))
+			qrc, err := qrcode.New(fmt.Sprintf("%s/verify/%s", frontUrl, candidate))
 			if err != nil {
 				return err
 			}
 
-			w, err := standard.New(fmt.Sprintf("out/%s-%s/%s_%s", name, card, canVerify[j], uid))
+			w, err := standard.New(fmt.Sprintf("out/%s-%s/%s_%s", name, card, canVerify[j], candidate))
 			if err != nil {
 				return err
 			}

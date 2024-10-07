@@ -71,7 +71,6 @@ func AddVotingHandlers(mux *http.ServeMux) {
 		id := r.PathValue("uid") + salt
 
 		ha := sha256.Sum256([]byte(id))
-		fmt.Println(fmt.Sprintf("%x", ha[:2]))
 
 		io.WriteString(w, fmt.Sprintf("%x", ha[:2]))
 	})
