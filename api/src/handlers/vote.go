@@ -12,7 +12,11 @@ import (
 	"votingapi/src/responses"
 )
 
+// AddVotingHandlers adds voting handlers to server mutex
 func AddVotingHandlers(mux *http.ServeMux) {
+
+	// registers a single vote. Accepts VoteRequest as the request type and requests
+	// voting functionality from postgres
 	mux.HandleFunc("POST /api/vote", func(w http.ResponseWriter, r *http.Request) {
 
 		body, err := io.ReadAll(r.Body)
@@ -58,6 +62,8 @@ func AddVotingHandlers(mux *http.ServeMux) {
 
 	})
 
+	// Generates and returns the candidate validation code so that client users can compare
+	// it to the candidate they are trying to vote for. For anonymity purposes
 	mux.HandleFunc("GET /api/getint/{uid}", func(w http.ResponseWriter, r *http.Request) {
 
 		salt, ok := os.LookupEnv("CANDIDATE_SALT")

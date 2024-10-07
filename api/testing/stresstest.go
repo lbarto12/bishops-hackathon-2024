@@ -7,6 +7,7 @@ import (
 	"votingapi/src/postgres"
 )
 
+// StressTest Broken for multiple version since the DB schema has changed
 func StressTest() {
 	time.Sleep(5 * time.Second)
 	db, err := postgres.Database()

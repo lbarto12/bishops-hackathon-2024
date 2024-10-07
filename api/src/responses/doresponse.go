@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// DoSuccessResponse Utility function for returning a web response with a success header
 func DoSuccessResponse[T any](w http.ResponseWriter, data ApiResponse[T]) {
 	w.WriteHeader(data.Status)
 	w.Header().Add("Content-Type", "application/json")
@@ -26,6 +27,7 @@ func DoSuccessResponse[T any](w http.ResponseWriter, data ApiResponse[T]) {
 	}
 }
 
+// DoErrorResponse Utility function for returning a web response with an error
 func DoErrorResponse[T any](w http.ResponseWriter, response ApiResponse[T]) {
 	w.Header().Set("Content-Type", "application/json")
 	if response.Message != "" {

@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// GetCredentials Creates and returns credentials struct for postgres, loads relevant information from .env
 func GetCredentials() Credentials {
 	host, ok := os.LookupEnv("POSTGRES_HOST")
 	if !ok {
@@ -42,6 +43,8 @@ func GetCredentials() Credentials {
 	}
 }
 
+// Connect connects to database using SQLX connection pool and returns the pool to the user. Should only
+// be called once
 func Connect() (*sqlx.DB, error) {
 
 	credentials := GetCredentials()

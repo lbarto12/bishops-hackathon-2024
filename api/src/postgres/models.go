@@ -1,5 +1,6 @@
 package postgres
 
+// Credentials A struct for storing postgres credentials
 type Credentials struct {
 	Host     string
 	Port     string
@@ -8,6 +9,7 @@ type Credentials struct {
 	Database string
 }
 
+// VoterData Internal struct for modelling voter table queries
 type VoterData struct {
 	Id         int    `db:"id"`
 	HasVoted   bool   `db:"has_voted"`
@@ -16,15 +18,13 @@ type VoterData struct {
 	Candidate3 string `db:"candidate_3"`
 }
 
-type VoterRequest struct {
-	Data string `json:"data"`
+// PollData Internal struct for modelling poll table queries
+type PollData struct {
+	Polls []CandidatePollData `json:"polls"`
 }
 
+// CandidatePollData Internal sub-struct for modelling poll table queries
 type CandidatePollData struct {
 	Candidate int `json:"candidate"`
 	Votes     int `json:"votes"`
-}
-
-type PollData struct {
-	Polls []CandidatePollData `json:"polls"`
 }

@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+// CreateVoter creates a single voter in the Postgres database with the uuids and hashes received
 func CreateVoter(name string, healthCard string, uuids []string, verification []string) error {
 	db, err := postgres.Database()
 	if err != nil {

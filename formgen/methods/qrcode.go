@@ -11,6 +11,8 @@ import (
 	"slices"
 )
 
+// GenerateVoters accepts and int 'n', and generates entries in the database for 'n' voters, and generates
+// '3n' QR codes for users to scan to place their votes
 func GenerateVoters(n int64) error {
 
 	frontUrl, ok := os.LookupEnv("FRONTEND_URL")

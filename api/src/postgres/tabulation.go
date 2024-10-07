@@ -1,6 +1,6 @@
 package postgres
 
-// TODO: @Jerome, Dangerous, need to discuss.
+// GetPolls Retrieves polling data from postgres to serve api/tabulation/polls
 func GetPolls() (PollData, error) {
 
 	db, err := Database()

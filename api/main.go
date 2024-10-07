@@ -11,6 +11,7 @@ import (
 	"votingapi/src/serve"
 )
 
+// This is the API. Manages requests between the client and postgres
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -40,7 +41,7 @@ func main() {
 
 	apiUrl := fmt.Sprintf("%s:%s", apiHost, apiPort)
 
-	log.Printf("Frontend %s", frontendPath)
+	// Adds cors headers for exclusively the frontend and tabulation websites
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{frontendPath, tabulationPath},
 		AllowCredentials: true,
@@ -54,6 +55,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Create and serve server mutex
 	mux := http.NewServeMux()
 
 	serve.AddApiHandlers(mux)
