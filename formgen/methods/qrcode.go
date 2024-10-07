@@ -58,7 +58,7 @@ func GenerateVoters(n int64) error {
 				return err
 			}
 
-			w, err := standard.New(fmt.Sprintf("out/%s-%s/%s-%s", name, card, canVerify[j], uid))
+			w, err := standard.New(fmt.Sprintf("out/%s-%s/%s_%s", name, card, canVerify[j], uid))
 			if err != nil {
 				return err
 			}
