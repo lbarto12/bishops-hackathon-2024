@@ -40,9 +40,10 @@ INSERT INTO voter_reg
 
 	result.LastInsertId()
 
-	can1 := fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[0])))
-	can2 := fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[1])))
-	can3 := fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[2])))
+	can1 := sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[0])))))
+	can2 := sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[1])))))
+	can3 := sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[2])))))
+
 	_, err = tx.Exec(`
 	INSERT INTO voter
 	(candidate_1, candidate_2, candidate_3, has_voted)
