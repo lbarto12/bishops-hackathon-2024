@@ -23,6 +23,11 @@ func main() {
 		log.Fatal("Environment variable `FRONTEND_URL` not set:")
 	}
 
+	tabulationPath, ok := os.LookupEnv("TABULATION_URL")
+	if !ok {
+		log.Fatal("Environment variable `TABULATION_URL` not set:")
+	}
+
 	apiHost, ok := os.LookupEnv("API_HOST")
 	if !ok {
 		log.Fatal("Environment variable `API_HOST` not set:")
@@ -37,7 +42,7 @@ func main() {
 
 	log.Printf("Frontend %s", frontendPath)
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{frontendPath},
+		AllowedOrigins:   []string{frontendPath, tabulationPath},
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 		// Debug: true,

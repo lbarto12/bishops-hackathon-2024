@@ -43,7 +43,7 @@ func Vote(token string) error {
 		return err
 	}
 
-	query, err := tx.NamedQuery(`UPDATE voter SET has_voted = true WHERE id = :id;`, voterData.Id)
+	query, err := tx.NamedQuery(`UPDATE voter SET has_voted = true WHERE id = :id;`, voterData)
 	if err != nil {
 		_ = tx.Rollback()
 		return err

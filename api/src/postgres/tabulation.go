@@ -10,7 +10,7 @@ func GetPolls() (PollData, error) {
 
 	var data PollData
 
-	rows, err := db.Query("SELECT * FROM polls;")
+	rows, err := db.Query("SELECT * FROM polls ORDER BY candidate;")
 	if err != nil {
 		return PollData{}, err
 	}
