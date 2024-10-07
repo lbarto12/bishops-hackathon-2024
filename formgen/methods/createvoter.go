@@ -19,7 +19,7 @@ func CreateVoter(name string, healthCard string, uuids []string, verification []
 		return err
 	}
 
-	result, err := tx.Exec(`
+	_, err = tx.Exec(`
 INSERT INTO voter_reg 
     (health_card, name, candidate_1, candidate_2, candidate_3, can_verify_1, can_verify_2, can_verify_3) 
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
@@ -38,11 +38,9 @@ INSERT INTO voter_reg
 		return err
 	}
 
-	result.LastInsertId()
-
-	can1 := sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[0])))))
-	can2 := sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[1])))))
-	can3 := sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[2])))))
+	can1 := fmt.Sprintf("%x", sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[0]))))))
+	can2 := fmt.Sprintf("%x", sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[1]))))))
+	can3 := fmt.Sprintf("%x", sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[2]))))))
 
 	_, err = tx.Exec(`
 	INSERT INTO voter
