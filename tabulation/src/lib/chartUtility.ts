@@ -4,8 +4,8 @@ import { startPolling, pollsData } from './api/polls';
 
 const { backgroundColors, borderColors } = getColorSets();
 
-export let chartObjects = []; // To be able to multiple chart instances
-export let stopPolling;
+export let chartObjects: Array<Chart> = []; // To be able to multiple chart instances
+export let stopPolling: () => void;
 
 pollsData.subscribe(data => {
     const pollResults = data.map(({ percentage }) => percentage); // Map to percentages directly

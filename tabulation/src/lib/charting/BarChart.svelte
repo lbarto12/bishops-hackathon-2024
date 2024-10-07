@@ -15,10 +15,3 @@
 
 <canvas bind:this={canvasElement}></canvas>
 
-
-<style>
-    canvas {
-        width: 30vw;
-        height: 30vh; /* not working*/
-    }
-</style>

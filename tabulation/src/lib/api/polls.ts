@@ -1,11 +1,12 @@
-import { writable } from 'svelte/store'; //
+import {writable} from 'svelte/store'; //
+import {PUBLIC_API_HOST} from "$env/static/public";
 
 // To store to hold poll data
 export const pollsData = writable([]);
 
 
 export async function fetchPollData() {
-    const url = "http://127.0.0.1:5005/api/tabulation/polls";
+    const url = PUBLIC_API_HOST + "/tabulation/polls";
     try {
         const response = await fetch(url);
         if (!response.ok) {
