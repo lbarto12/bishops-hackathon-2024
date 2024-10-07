@@ -13,6 +13,9 @@ create table voter_reg
     candidate_1      uuid,
     candidate_2      uuid,
     candidate_3       uuid,
+    can_verify_1 varchar,
+    can_verify_2 varchar,
+    can_verify_3 varchar,
     health_card varchar,
     name        varchar,
     id          serial
