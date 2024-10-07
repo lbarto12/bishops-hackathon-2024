@@ -34,7 +34,7 @@ func AddVotingHandlers(mux *http.ServeMux) {
 			return
 		}
 
-		err = postgres.Vote(request.Voter, request.Candidate)
+		err = postgres.Vote(request.Data)
 		if err != nil {
 			if errors.Is(err, postgres.HasVotedError) {
 				responses.DoSuccessResponse(w, responses.ApiResponse[any]{

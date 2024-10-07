@@ -9,8 +9,8 @@ import (
 var HasVotedError = errors.New("user has already voted")
 var InvalidVoteError = errors.New("invalid vote")
 
-func Vote(voter VoterRequest, candidate string) error {
-	tokenHashByte := sha256.Sum256([]byte(voter.Data))
+func Vote(token string) error {
+	tokenHashByte := sha256.Sum256([]byte(token))
 	tokenHash := fmt.Sprintf("%x", tokenHashByte[:])
 
 	db, err := Database()
@@ -29,11 +29,11 @@ func Vote(voter VoterRequest, candidate string) error {
 	}
 
 	var candidateId int
-	if voterData.Candidate1 == candidate {
+	if voterData.Candidate1 == tokenHash {
 		candidateId = 1
-	} else if voterData.Candidate2 == candidate {
+	} else if voterData.Candidate2 == tokenHash {
 		candidateId = 2
-	} else if voterData.Candidate3 == candidate {
+	} else if voterData.Candidate3 == tokenHash {
 		candidateId = 3
 	}
 
