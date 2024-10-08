@@ -14,16 +14,12 @@ cd frontend && bun install
 
 ### Voter API
 ```
-cd api && go mod download
+cd api && go mod tidy
 ```
 
-
-## Setup Docker
-
-
-### Build
+### Formgen
 ```
-cd <project root> && docker compose up
+cd formgen && go mod tidy
 ```
 
 ### In Editor 
@@ -97,12 +93,26 @@ CANDIDATE_SALT='<salt>'
 
 ## Build The App
 
+Launch Postgress with Docker
+```
+cd <project root> && docker compose up
+```
+
 Launch API
 ```
-cd voterapi && go run .
+cd api && go run .
+```
+Run Formgen:
+```
+cd formgen && go run .
 ```
 
 Launch Frontend
 ```
-cd frontend && bun run dev --
+cd frontend && bun run dev --host
+```
+
+Launch Tabulation
+```
+cd tabulation && bun run dev --host
 ```
