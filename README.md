@@ -14,7 +14,7 @@ cd frontend && bun install
 
 ### Voter API
 ```
-cd voterapi && go mod download
+cd api && go mod download
 ```
 
 
