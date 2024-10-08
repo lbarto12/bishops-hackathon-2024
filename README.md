@@ -9,7 +9,7 @@
 
 ### Front-End
 ```
-cd fronted && bun install
+cd frontend && bun install
 ```
 
 ### Voter API
