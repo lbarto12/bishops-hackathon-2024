@@ -19,7 +19,7 @@
         </div>
 
         <div class="chart">
-            <h2>Horizontal Bar Chart</h2>
+            <h2>Doughnut Chart</h2>
             <DoughnutChart />
         </div>
     </div>
