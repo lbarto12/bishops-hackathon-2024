@@ -61,17 +61,38 @@ create table polls
 
 ```
 
-.env in voterapi example:
+.env in api example:
 ```.env
-FRONTEND_URL=... # for CORS
-API_HOST=0.0.0.0
-API_PORT=1234
+FRONTEND_URL="http://localhost:5173"
+TABULATION_URL="http://localhost:5174"
+API_HOST=localhost
+API_PORT=5005
 
-POSTGRES_HOST=0.0.0.0
+POSTGRES_HOST=localhost
 POSTGRES_PORT=5050
 POSTGRES_USER=voter_user
 POSTGRES_PASSWORD=voter_password
 POSTGRES_DBNAME=voter_db_name
+
+CANDIDATE_SALT='<salt>'
+```
+
+.env in tabulation AND frontend example:
+```.env
+PUBLIC_API_HOST="http://localhost:5005/api"
+```
+
+.env in formgen example:
+```.env
+FRONTEND_URL="http://localhost:5173"
+
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5050
+POSTGRES_USER=voter_user
+POSTGRES_PASSWORD=voter_password
+POSTGRES_DBNAME=voter_db_name
+
+CANDIDATE_SALT='<salt>'
 ```
 
 ## Build The App
