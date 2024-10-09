@@ -66,7 +66,7 @@ func GenerateQRCode(name, card string, canUUID, canVerify []string) error {
 		return err
 	}
 	for j, candidate := range canUUID {
-		qrc, err := qrcode.New(fmt.Sprintf("%s/verify/%s", frontUrl, candidate))
+		qrc, err := qrcode.New(fmt.Sprintf("%s/verify/%s.jpeg", frontUrl, candidate))
 		if err != nil {
 			return err
 		}
