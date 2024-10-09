@@ -36,7 +36,7 @@ func GenerateStaticVoters() error {
 	//static hard coded salt for demo
 	salt := "90p34ujtra3w4htfgaip3w4948hytq3p3948ythfaewihnflae8ryghpa4hetga98er8hgzergh"
 	for _, voter := range voterStatic {
-		var canVerify = make([]string, 3)
+		var canVerify = make([]string, 0)
 		candidates := []string{voter.can1, voter.can2, voter.can3}
 		for _, candidate := range candidates {
 			id := candidate + salt
