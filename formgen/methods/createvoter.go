@@ -7,8 +7,7 @@ import (
 	"log"
 )
 
-// CreateVoter creates a single voter in the Postgres database with the uuids and hashes received
-func CreateVoter(name string, healthCard string, uuids []string, verification []string) error {
+func createRegVoter(name string, healthCard string, uuids []string, verification []string) error {
 	db, err := postgres.Database()
 	if err != nil {
 		return err
@@ -38,6 +37,22 @@ INSERT INTO voter_reg
 		log.Fatal(err)
 		return err
 	}
+	return tx.Commit()
+}
+
+// CreateVoter creates a single voter in the Postgres database with the uuids and hashes received
+func CreateVoter(name string, healthCard string, uuids []string) error {
+
+	db, err := postgres.Database()
+	if err != nil {
+		return err
+	}
+
+	tx, err := db.Beginx()
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
 
 	can1 := fmt.Sprintf("%x", sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[0]))))))
 	can2 := fmt.Sprintf("%x", sha256.Sum256([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(name+healthCard+uuids[1]))))))
@@ -59,6 +74,5 @@ INSERT INTO voter_reg
 		log.Fatal(err)
 		return err
 	}
-
 	return nil
 }

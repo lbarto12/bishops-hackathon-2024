@@ -25,8 +25,11 @@ func main() {
 		return
 	}
 
-	err = methods.GenerateVoters(5)
+	err = methods.ResetDB()
+
+	err = methods.GenerateStaticVoters()
 	if err != nil {
+
 		log.Fatal(err)
 		return
 	}
